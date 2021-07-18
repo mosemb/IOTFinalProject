@@ -1,0 +1,37 @@
+h1{
+
+    color:red;
+}
+
+.wrapper{
+    position: relative;
+    margin: auto;
+    height: 10vh;
+    width: 10vw;
+  }
+
+.form-group{
+
+    width: 22pc;
+
+    
+}
+
+form {
+    display: inline-block;
+}
+
+.container{
+    padding-top: 5pc;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+

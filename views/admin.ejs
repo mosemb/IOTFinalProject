@@ -1,0 +1,100 @@
+<%- include("./partials/header") %>
+<link rel="stylesheet" href="./adminstyles.css" />
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Node + Express + MongoDb example</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js"
+      integrity="sha512-VCHVc5miKoln972iJPvkQrUYYq7XpxXzvqNfiul1H4aZDwGBGC0lq373KNleaB2LpnC2a/iNfE5zoRYmB4TRDQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 chart">
+          <h2 id ="mainhead">Admin Room monitor for Two Hourly Statistics </h2>
+          <p id="counter">Loading...</p>
+          <p id="message">When a Bar for the Room Shows Red, Its Dangerous Please Inform The Concerned. </p>
+          
+          <h4>Two Hourly Room Statistics </h4>
+          <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+
+          
+
+          <div
+            class="wrapper"
+            style="position: relative; height: 80vh; width: 80vw"
+          >
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
+
+        <!--
+
+        <div class="col-6 chart">
+          <h3>Room BLE Scan Two Hourly Statistics</h3>
+          <p id="counters">Loading...</p>
+          <p id="messages">Loading safety status...</p>
+          <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+          <div
+            class="wrapper"
+            style="position: relative; height: 40vh; width: 40vw"
+          >
+            <canvas id="myChart1"></canvas>
+          </div>
+        </div>
+
+         -->
+      </div>
+
+      <div class="row">
+        <div class="col-6 chart">
+          <h4>2hr Statistics (Polar Chart) </h4>
+          <div
+            class="wrapper"
+            style="position: relative; height: 40vh; width: 40vw"
+          >
+            <canvas id="myChart2"></canvas>
+          </div>
+        </div>
+
+        <div class="col-6 chart">
+          <h4>2hr Statistics (Doughnut)</h4>
+          <div
+            class="wrapper"
+            style="position: relative; height: 40vh; width: 40vw"
+          >
+            <canvas id="myChart3"></canvas>
+          </div>
+        </div>
+
+   
+
+
+      </div>
+    </div>
+  </body>
+
+  <script src="admin.js"></script>
+  <script src="admin_two.js"></script>
+</html>
+
+
+
+<%- include("./partials/footer") %>

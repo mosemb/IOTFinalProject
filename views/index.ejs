@@ -1,0 +1,44 @@
+<%- include("./partials/header") %>
+
+<head>
+    <link rel="stylesheet" href="./stylesindex.css"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet"> 
+</head>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12" style="text-align: center; padding-top: 250px;" >
+
+                
+                
+                <% if ( user == 'admin@gmail.com') { %>
+                    <h2 id = "userheader" style="text-align:center; color: red;" >Welcome <%=user%></h2>
+                    <h2 id = "userheaderr" style="text-align:center" >This is the BLE Scanning System, Please Choose Your Action!</h2>
+                    <a href="/admin" class="btn btn-primary">Enter to Monitor</a>
+
+                    <%} else { %>
+                        <h2 id = "userheader" style="text-align:center; color: red;" >Welcome to <%=user%></h2>
+                        <h2 id = "userheaderr" style="text-align:center" >This is the BLE Scanning System, Please Choose Your Action!</h2>
+                        <a href="/dashboardreal" class="btn btn-primary">Enter to Scan</a>
+                    <% } %>
+                <a href="/logout" class="btn btn-danger">Logout</a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+
+
+
+
+<%- include("./partials/footer") %>
+
+
+
