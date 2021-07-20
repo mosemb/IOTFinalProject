@@ -15,7 +15,7 @@ setInterval(function () {
       Labels = []
       Count = []
       for(var i =0; i<d.count.length; i++){
-        //console.log(d.count[i]._id)
+      
         Labels.push(d.count[i]._id)
         Count.push(d.count[i].count)
       }
@@ -55,7 +55,7 @@ setInterval(function () {
         },
       });
 
-      var colorChangeValue = 12; //Color change value
+      var colorChangeValue = 11; //Color change value
       var dataset = myChart.data.datasets[0].data;
       for (var i = 0; i < dataset.length; i++) {
         if (dataset[i] > colorChangeValue) {
@@ -89,21 +89,18 @@ setInterval(function () {
       throw new Error("Request failed.");
     })
     .then(function (d) {
-      //console.log(d.count)
+   
       
       Labels = []
       Count = []
       for(var i =0; i<d.count.length; i++){
         console.log(d.count[i]._id)
         Labels.push(d.count[i]._id)
-        //console.log(d.count[i].count)
+       
         Count.push(d.count[i].count)
       }
 
-      //console.log(Labels)
-      //console.log(Count)
-
-  
+   
 
      if (myChart2 !== null) {
         myChart2.destroy();
@@ -139,7 +136,7 @@ setInterval(function () {
         },
       });
 
-      var colorChangeValue = 12; //Color change value
+      var colorChangeValue = 11; //Color change value
       var dataset = myChart2.data.datasets[0].data;
       for (var i = 0; i < dataset.length; i++) {
         if (dataset[i] > colorChangeValue) {
@@ -220,7 +217,7 @@ setInterval(function () {
         },
       });
 
-      var colorChangeValue = 12; //Color change value
+      var colorChangeValue = 11; //Color change value
       var dataset = myChart3.data.datasets[0].data;
       for (var i = 0; i < dataset.length; i++) {
         if (dataset[i] > colorChangeValue) {

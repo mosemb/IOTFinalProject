@@ -8,21 +8,20 @@ const findCount = require("./db/findCount");
 const { restart } = require("nodemon"); // Keeps server running
 const UserDataReal = require("./db/mongoonseReal"); //Mangoose Data
 const express = require("express"); // This is the webserver
-const jwt = require("jsonwebtoken");
-const ejs = require("ejs") 
-const authenticateUser = require("./middleware/authenticateUser")
-const cookieSession = require("cookie-session");
-const bodyParser = require('body-parser');
-const groupUsers = require('./db/groupUsers')
-const findUserData = require('./db/finduserData')
-const findUserData2hr = require('./db/findUserData2hr')
-const timeStatistics = require('./db/timestatistics')
+const jwt = require("jsonwebtoken"); // THis is for the jwt tokens
+const ejs = require("ejs")  // This is for ejs views
+const authenticateUser = require("./middleware/authenticateUser") // Authentication
+const cookieSession = require("cookie-session"); // Cookies 
+const bodyParser = require('body-parser'); // Parse incoming request bodies
+const groupUsers = require('./db/groupUsers') // Endpoint for groupdata
+const findUserData = require('./db/finduserData') // Endpoint for user data
+const findUserData2hr = require('./db/findUserData2hr') // Endpoint for user data for 2hrs
+const timeStatistics = require('./db/timestatistics') // Endpoint for other time statistics
+
+
+
 
 const app = express();
-
-
-
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
@@ -53,21 +52,6 @@ app.get("/login", (req, res) => {
   res.render("login");
 })
 
-
-/*
-app.get("/userdatareal" , authenticateUser, async (req, res) => { 
- try {
-    const user = await UserDataReal.find({});
-
-    for(let i =0; i<user.length; i++){
-    }
-
-    res.send(user);
-  } catch (e) {
-    res.send(500).send(e);
-  } 
-
-  }); */
 
 //logout
 app.get("/logout",authenticateUser, (req, res) => {
@@ -140,16 +124,6 @@ counted.then((result) => {
   });
 });
 
-
-/*
-app.get("/dash", async (req, res) => {
-  try {
-    const counted = await findCount().catch(console.error);
-    res.send(counted);
-  } catch (e) {
-    res.status(e).send(e);
-  }
-});*/
 
 
 app.get('/groupdata', authenticateUser,async(req,res)=>{
@@ -251,19 +225,6 @@ const scan = async function(){
 }
 
 
-
-/* scanner
-  .startScan()
-  .then(() => {
-    console.log("Started to scan.");
-  })
-  .catch((error) => {
-    console.error(error);
-  }); */
-
-  
-
-  
 app.get("/scanner",authenticateUser, (res, req) => {
   try {
     const scan = scanner.startScan();
