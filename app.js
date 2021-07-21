@@ -30,7 +30,7 @@ const publicDirPath = path.join(__dirname, "./public");
 app.use(express.static(publicDirPath)); // Serves the static files from the public folder
 app.set("view engine", "hbs");
 app.set("view engine", "ejs");
-//app.use(UserRoutes); // Pick up the user Routes
+
 app.use(express.json()); //
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -99,14 +99,7 @@ app.post("/register/login", async (req, res) => {
   }
 });
 
-const counted = findCount().catch(console.error);
-counted.then((result) => {
-  console.log(result);
 
-  app.get("/dashboard", (req, res) => {
-    res.render("dashboard", { result });
-  });
-});
 
 app.get("/groupdata", authenticateUser, async (req, res) => {
   try {
