@@ -160,7 +160,7 @@ app.get("/indexreal", async (req, res) => {
 const scanner = new BeaconScanner();
 scanner.onadvertisement = async (ad) => {
   var count = 0;
-  //console.log(JSON.stringify(ad, null, " "));
+  console.log(JSON.stringify(ad, null, " "));
   try {
     if (dict2.hasOwnProperty(ad.id)) {
       return;
@@ -180,14 +180,14 @@ scanner.onadvertisement = async (ad) => {
             var transporter = nodemailer.createTransport({
               service: "hotmail",
               auth: {
-                user: "mose_unige_2@outlook.com",
+                user: "moseiot@outlook.com",
                 pass: "mercyme21",
               },
             });
             const room_no = usarry[0]['user']
 
             var mailOptions = {
-              from: "mose_unige_2@outlook.com" ,
+              from: "moseiot@outlook.com" ,
               to: "mosejava@gmail.com",
               subject: "Sending Notification from BLE Scanner",
               text: `Warning!!! Number of people in ${room_no} is ${d.count+1}, and this has exceeded the safety level of 15.`,
