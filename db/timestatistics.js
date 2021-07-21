@@ -46,10 +46,6 @@ $sort : { _id: 1 }
     
 ] ).toArray()
 
-
-
-
-
     results['count'] = cursor
  
   } catch (e) {
@@ -59,8 +55,6 @@ $sort : { _id: 1 }
   }
 
    return results 
-
-
 };
 
 
