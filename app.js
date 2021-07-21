@@ -9,17 +9,15 @@ const { restart } = require("nodemon"); // Keeps server running
 const UserDataReal = require("./db/mongoonseReal"); //Mangoose Data
 const express = require("express"); // This is the webserver
 const jwt = require("jsonwebtoken"); // THis is for the jwt tokens
-const ejs = require("ejs")  // This is for ejs views
-const authenticateUser = require("./middleware/authenticateUser") // Authentication
-const cookieSession = require("cookie-session"); // Cookies 
-const bodyParser = require('body-parser'); // Parse incoming request bodies
-const groupUsers = require('./db/groupUsers') // Endpoint for groupdata
-const findUserData = require('./db/finduserData') // Endpoint for user data
-const findUserData2hr = require('./db/findUserData2hr') // Endpoint for user data for 2hrs
-const timeStatistics = require('./db/timestatistics') // Endpoint for other time statistics
-
-
-
+const ejs = require("ejs"); // This is for ejs views
+const authenticateUser = require("./middleware/authenticateUser"); // Authentication
+const cookieSession = require("cookie-session"); // Cookies
+const bodyParser = require("body-parser"); // Parse incoming request bodies
+const groupUsers = require("./db/groupUsers"); // Endpoint for groupdata
+const findUserData = require("./db/finduserData"); // Endpoint for user data
+const findUserData2hr = require("./db/findUserData2hr"); // Endpoint for user data for 2hrs
+const timeStatistics = require("./db/timestatistics"); // Endpoint for other time statistics
+const nodemailer = require("nodemailer");
 
 const app = express();
 
@@ -29,11 +27,9 @@ app.listen(PORT, () => {
 });
 const publicDirPath = path.join(__dirname, "./public");
 
-
-
 app.use(express.static(publicDirPath)); // Serves the static files from the public folder
 app.set("view engine", "hbs");
-app.set("view engine", "ejs")
+app.set("view engine", "ejs");
 //app.use(UserRoutes); // Pick up the user Routes
 app.use(express.json()); //
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -41,25 +37,21 @@ app.use(
   cookieSession({
     keys: ["randomStringASyoulikehjudfsajk"],
   })
-);  //Cookie Session
-
+); //Cookie Session
 
 app.get("/register", (req, res) => {
   res.render("register");
-})
+});
 
 app.get("/login", (req, res) => {
   res.render("login");
-})
-
+});
 
 //logout
-app.get("/logout",authenticateUser, (req, res) => {
+app.get("/logout", authenticateUser, (req, res) => {
   req.session.user = null;
   res.redirect("/login");
 });
-
-
 
 dict2 = {};
 app.post("/register", async (req, res) => {
@@ -67,18 +59,16 @@ app.post("/register", async (req, res) => {
 
   try {
     await user.save();
-      const token = jwt.sign({ _id: user._id }, "iotproject")
-      user.tokens.push({ token });
-      user.save()
-      return res.redirect('/login');
-
+    const token = jwt.sign({ _id: user._id }, "iotproject");
+    user.tokens.push({ token });
+    user.save();
+    return res.redirect("/login");
   } catch (e) {
-    res.send("An Error Occured We could not Register you")
+    res.send("An Error Occured We could not Register you");
   }
-
 });
 
-const usarry = []
+const usarry = [];
 app.post("/register/login", async (req, res) => {
   try {
     const user = await UserDataReal.verifyLogin(
@@ -88,177 +78,192 @@ app.post("/register/login", async (req, res) => {
     // Verify the user and login details
     const token = jwt.sign({ _id: user._id }, "iotproject");
     user.tokens.push({ token });
-   
+
     user.save();
-    
 
-    req.session.user = {user:user.email};
-    console.log(req.session.user.user)
-    
-    if(usarry.length>0){
-      while(usarry.length>0){
-        usarry.pop()
+    req.session.user = { user: user.email };
+    console.log(req.session.user.user);
+
+    if (usarry.length > 0) {
+      while (usarry.length > 0) {
+        usarry.pop();
       }
-      usarry.push({user:user.email,token})
-      
-    }else{
-
-      usarry.push({user:user.email,token})
+      usarry.push({ user: user.email, token });
+    } else {
+      usarry.push({ user: user.email, token });
     }
 
-    res.render("index",{user:user.email})  
-  
+    res.render("index", { user: user.email });
   } catch (e) {
-    res.send("Not Logged in Please enter Valid Credentials")
+    res.send("Not Logged in Please enter Valid Credentials");
   }
 });
 
-
-
 const counted = findCount().catch(console.error);
 counted.then((result) => {
-  //console.log(result);
+  console.log(result);
 
   app.get("/dashboard", (req, res) => {
     res.render("dashboard", { result });
   });
 });
 
-
-
-app.get('/groupdata', authenticateUser,async(req,res)=>{
-  try{
-    const groupdata = await groupUsers().catch(console.error)
-    
-    res.send(groupdata)
-
-  }catch(e){
-
-    res.status(e).send(e);
-
-  }
-})
-
-app.get('/finduserdata',authenticateUser, async(req, res)=>{
-  try{
-    const finduser = await findUserData(usarry).catch(console.error)
-    res.send(finduser)
-  }catch(e){
-    res.status(e).send(e)
-  }
-});
-
-
-app.get('/finduserdatahrs',authenticateUser, async(req,res)=>{
-  try{
-    const finduserdata2hrs = await findUserData2hr(usarry).catch(console.error)
-    res.send(finduserdata2hrs)
-  }catch(e){
-    res.status(e).send(e)
-  }
-}); 
-
-
-app.get('/timestatistics', authenticateUser,async(req,res)=>{
-
+app.get("/groupdata", authenticateUser, async (req, res) => {
   try {
-    const timestats = await timeStatistics(usarry).catch(console.error)
-    res.send(timestats)
-  }catch(e){
-    res.status(e).send(e)
-  }
+    const groupdata = await groupUsers().catch(console.error);
 
+    res.send(groupdata);
+  } catch (e) {
+    res.status(e).send(e);
+  }
 });
 
+app.get("/finduserdata", authenticateUser, async (req, res) => {
+  try {
+    const finduser = await findUserData(usarry).catch(console.error);
+    res.send(finduser);
+  } catch (e) {
+    res.status(e).send(e);
+  }
+});
 
-app.get("/dashboardreal",authenticateUser, async (req,res)=>{
+app.get("/finduserdatahrs", authenticateUser, async (req, res) => {
+  try {
+    const finduserdata2hrs = await findUserData2hr(usarry).catch(console.error);
+    res.send(finduserdata2hrs);
+  } catch (e) {
+    res.status(e).send(e);
+  }
+});
+
+app.get("/timestatistics", authenticateUser, async (req, res) => {
+  try {
+    const timestats = await timeStatistics(usarry).catch(console.error);
+    res.send(timestats);
+  } catch (e) {
+    res.status(e).send(e);
+  }
+});
+
+app.get("/dashboardreal", authenticateUser, async (req, res) => {
   res.render("dashboardreal");
 });
 
-app.get("/admin", authenticateUser,async( req, res)=>{
-    res.render('admin');
+app.get("/admin", authenticateUser, async (req, res) => {
+  res.render("admin");
 });
 
-app.get("/indexreal", async(req,res)=>{
-  res.render("home")
-})
-
+app.get("/indexreal", async (req, res) => {
+  res.render("home");
+});
 
 const scanner = new BeaconScanner();
 scanner.onadvertisement = async (ad) => {
-    var count = 0;
-    console.log(JSON.stringify(ad, null, " "));
-    try {
-      if (dict2.hasOwnProperty(ad.id)) {
+  var count = 0;
+  //console.log(JSON.stringify(ad, null, " "));
+  try {
+    if (dict2.hasOwnProperty(ad.id)) {
+      return;
+    } else {
+      dict2[ad.id] = ad.address;
+      const b = findRecords(ad.id).catch(console.error);
 
-        return;
-        
-      } else {
-        dict2[ad.id] = ad.address;
-        const b = findRecords(ad.id).catch(console.error);
+      const finduserdata2hrs3 = findUserData2hr(usarry).catch(console.error);
+      finduserdata2hrs3.then((d) => {
+        console.log(d);
 
-        dbcreation({
-          id: ad.id,
-          address: ad.address,
-          BeaconType: ad.beaconType,
-          rssi: ad.rssi,
-          txtPower: ad.iBeacon.txPower,
-          created_date_utc: new Date(),
-          time: moment(new Date()).format("HH:mm:ss"),
-          counts: Object.keys(dict2).length,
-          hour: parseInt(moment(new Date()).format("HH")),
-          minutes: parseInt(moment(new Date()).format("mm")),
-          dateonly: moment(new Date()).format("DD/MM/YYYY"),
-          token:usarry
+        if (d.count >14) {
+          const nodemailer = require("nodemailer");
 
-        });
-      }
-    } catch (error) {
-      console.error;
+          try {
+
+            var transporter = nodemailer.createTransport({
+              service: "hotmail",
+              auth: {
+                user: "mose_unige_2@outlook.com",
+                pass: "mercyme21",
+              },
+            });
+            const room_no = usarry[0]['user']
+
+            var mailOptions = {
+              from: "mose_unige_2@outlook.com" ,
+              to: "mosejava@gmail.com",
+              subject: "Sending Notification from BLE Scanner",
+              text: `Warning!!! Number of people in ${room_no} is ${d.count+1}, and this has exceeded the safety level of 15.`,
+            };
+
+
+            // console.log(usarry[0]['user'])
+            transporter.sendMail(mailOptions, function (error, info) {
+              if (error) {
+                console.log(error);
+              } else {
+                console.log("Email sent: " + info.response);
+              }
+            });
+
+          }catch(error){
+
+            console.log(error)
+
+          }
+
+        }
+      });
+
+      dbcreation({
+        id: ad.id,
+        address: ad.address,
+        BeaconType: ad.beaconType,
+        rssi: ad.rssi,
+        txtPower: ad.iBeacon.txPower,
+        created_date_utc: new Date(),
+        time: moment(new Date()).format("HH:mm:ss"),
+        counts: Object.keys(dict2).length,
+        hour: parseInt(moment(new Date()).format("HH")),
+        minutes: parseInt(moment(new Date()).format("mm")),
+        dateonly: moment(new Date()).format("DD/MM/YYYY"),
+        token: usarry,
+      });
     }
+  } catch (error) {
+    console.error;
   }
+};
 
-const scan = async function(){
- const sc = await  scanner.startScan()
- console.log('Scanning')
- return sc
-}
+const scan = async function () {
+  const sc = await scanner.startScan();
+  console.log("Scanning");
+  return sc;
+};
 
-
-app.get("/scanner",authenticateUser, (res, req) => {
+app.get("/scanner", authenticateUser, (res, req) => {
   try {
     const scan = scanner.startScan();
-    scan()
+    scan();
     res.send("Scanning ");
   } catch (e) {
     res.send(e);
-  }});
+  }
+});
 
-  app.get('/scanners', function (req, res) {
-    try{
-      scan()
-      
-    }catch(e){
-      res.send(e)
-    }
-  })
+app.get("/scanners", function (req, res) {
+  try {
+    scan();
+  } catch (e) {
+    res.send(e);
+  }
+});
 
-const stop = async function(){
-  const scanstop = await scanner.stopScan()
-  return scanstop
-}
+const stop = async function () {
+  const scanstop = await scanner.stopScan();
+  return scanstop;
+};
 
-app.get('/scanners_stop', function (req, res) {
-  if(true){
-    stop() 
+app.get("/scanners_stop", function (req, res) {
+  if (true) {
+    stop();
     res.redirect("/dashboardreal");
   }
-})
-
-
-
-
-
-
-
-
+});

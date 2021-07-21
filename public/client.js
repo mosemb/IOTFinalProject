@@ -1,4 +1,6 @@
 
+
+
 setInterval(function () {
   fetch("http://localhost:5000/finduserdata", { method: "GET" })
     .then(function (response) {
@@ -7,27 +9,19 @@ setInterval(function () {
     })
     .then(function (data) {
       //console.log(data)
-      document.getElementById(
-        "counter"
-      ).innerHTML = `${new Date()}`;
-      
+      document.getElementById("counter").innerHTML = `${new Date()}`;
 
-     var str = ""
-  
-      str = `${data.count} people have so far entered this room.`
-      document.getElementById(
-        "message"
-      ).innerHTML = str;
+      var str = "";
+
+      str = `${data.count} people have so far entered this room.`;
+      document.getElementById("message").innerHTML = str;
 
       //console.log(str)
-
     })
     .catch(function (error) {
       console.log(error);
     });
-}, 150);
-
-
+}, 300);
 
 setInterval(function () {
   fetch("http://localhost:5000/finduserdatahrs", { method: "GET" })
@@ -36,38 +30,24 @@ setInterval(function () {
       throw new Error("Request failed.");
     })
     .then(function (data) {
-  
-      document.getElementById(
-        "counters"
-      ).innerHTML = `${new Date()}`;
+      document.getElementById("counters").innerHTML = `${new Date()}`;
       //var str = `Danger!!! people in room are ${data.count} and this is not safe.`
       //console.log(data)
 
-     var str = ""
-     
-      if(data.count>=11){
-        str = `Safety Status:-Danger!!! people in room are ${data.count} and this is not safe.`
-      }else{
+      var str = "";
 
-        str = `Safety Status:-Safe, number of people in the room is ${data.count} and this is safe.`
-      } 
+      if (data.count > 15) {
 
-      document.getElementById(
-        "messages"
-      ).innerHTML = str;
+        str = `Safety Status:-Danger!!! people in room are ${data.count} and this is not safe.`;
+      } else {
+        str = `Safety Status:-Safe, number of people in the room is ${data.count} and this is safe.`;
+      }
+
+      document.getElementById("messages").innerHTML = str;
 
       //console.log(str)
-
     })
     .catch(function (error) {
       console.log(error);
     });
-}, 150);
-
-
-
-
-
-
-
-
+}, 300);

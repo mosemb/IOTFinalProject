@@ -45,7 +45,7 @@ setInterval(function () {
         },
       });
 
-      var colorChangeValue = 11; //Change of color
+      var colorChangeValue = 15; //Change of color
       var dataset = myChart.data.datasets[0].data;
       for (var i = 0; i < dataset.length; i++) {
         if (dataset[i] > colorChangeValue) {
@@ -69,7 +69,7 @@ setInterval(function () {
     .catch(function (error) {
       console.log(error);
     });
-}, 150);
+}, 300);
 
 
 setInterval(function () {
@@ -114,7 +114,7 @@ setInterval(function () {
         },
       });
 
-      var colorChangeValue = 11; // Change of Color
+      var colorChangeValue = 15; // Change of Color
       var dataset = myChart1.data.datasets[0].data;
       for (var i = 0; i < dataset.length; i++) {
         if (dataset[i] > colorChangeValue) {
@@ -134,7 +134,7 @@ setInterval(function () {
     .catch(function (error) {
       console.log(error);
     });
-}, 150);
+}, 300);
 
 
 setInterval(function () {
@@ -194,7 +194,7 @@ setInterval(function () {
         },
       });
 
-      var colorChangeValue = 11; //Change of color
+      var colorChangeValue = 15; //Change of color
       var dataset = myChart2.data.datasets[0].data;
       for (var i = 0; i < dataset.length; i++) {
         if (dataset[i] > colorChangeValue) {
@@ -214,7 +214,7 @@ setInterval(function () {
     .catch(function (error) {
       console.log(error);
     });
-}, 150);
+}, 800);
 
 
 
@@ -275,7 +275,7 @@ setInterval(function () {
         },
       });
 
-      var colorChangeValue = 11; //Change of color
+      var colorChangeValue = 15; //Change of color
       var dataset = myChart3.data.datasets[0].data;
       for (var i = 0; i < dataset.length; i++) {
         if (dataset[i] >= colorChangeValue) {
@@ -295,7 +295,7 @@ setInterval(function () {
     .catch(function (error) {
       console.log(error);
     });
-}, 150); 
+}, 800); 
 
 
 
